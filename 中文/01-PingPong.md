@@ -6,10 +6,10 @@ typed-session 将通信过程看成一个状态机，每一次通信将改变状
 
 typed-session 受到typed-protocols的启发而创建，与它不同的是typed-session 将状态隐藏在幕后，尽量减少状态的泄露。
 
-通信过程需要为不确定状态建模，而这正是Mcbride Indexed Monad 所做的。为了使用do语法来描述通信内容需要使用QualifiedDo 语法扩展。在GHC 9.10.1之前的版本 QualifiedDo 存在Bug，因此typed-session 要求GHC 版本9.10.1 或以上。
+通信过程需要为不确定状态建模，而这正是[Mcbride Indexed Monad](https://stackoverflow.com/questions/28690448/what-is-indexed-monad) 所做的。为了使用do语法来描述通信内容需要使用QualifiedDo 语法扩展。在GHC 9.10.1之前的版本 QualifiedDo 存在Bug，因此typed-session 要求GHC 版本9.10.1 或以上。
 
 这个文档将详细介绍typed-session的用法。每一章都会通过具体的例子来解释typed-session的用法。每个章节的代码都可以在[typed-session-tutorial](https://github.com/sdzx-1/typed-session-tutorial)对应的分支中找到。
-![all code](data/tst-github.png)
+![all code](../data/tst-github.png)
 
 ## 让我们开始第一个例子PingPong
 
@@ -387,7 +387,7 @@ serverPeer = I.do
 ### 4.启动通信
 
 结构示意如下：
-![](data/fm.png)
+![](../data/fm.png)
 
 下面是server 的启动代码。
 ```haskell
@@ -470,6 +470,6 @@ runTCPClient = withSocketsDo $ do
 以上就是使用typed-session 实现一个PingPong 协议的全部代码。
 你可以通过 cabal run server, cabal run client 来测试代码。
 运行结果如下
-![run](data/01-run.png)
+![run](../data/01-run.png)
 
 typed-session 用起来并不是一件容易的事，它涉及很多的概念，很多代码。将整个体系建立起来总是比较困难的，但是别担心，最困难的时候已经过去了，后面文章的例子都是在PingPong的基础上逐步完善，添加更多的功能，这将比建立体系容易很多。
