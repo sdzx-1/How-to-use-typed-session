@@ -1,6 +1,6 @@
 # 01-PingPong
 
-The typed-session is a communication protocol framework that can statically check the correctness of communication semantics.
+The [typed-session](https://github.com/sdzx-1/typed-session) is a communication protocol framework that can statically check the correctness of communication semantics.
 
 The typed-session regards the communication process as a state machine. Each communication will change the state of the state machine. By tracking these state changes in type, the correctness of communication can be checked.
 
