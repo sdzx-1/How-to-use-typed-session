@@ -234,3 +234,7 @@ Terminal End    End    End
   Terminal         (End)       (End)       (End)  
 ```
 具体状态机的生成是由库[typed-session-state-algorithm](git@github.com:sdzx-1/typed-session-state-algorithm.git)完成,实际的状态生成还需要考虑分支和循环的情况。
+
+-------------------------
+你可以使用`cabal run server`, `cabal run counter`和`cabal run client`来运行程序。server和counter应先于client启动。运行结果如下:
+![run](../data/02-run.png)
