@@ -1,4 +1,5 @@
 # 06-Check
+第六章的代码可以在此[找到](https://github.com/sdzx-1/typed-session-tutorial/tree/06-Check)。
 
 现在让我们重新看看到目前为止的协议：
 ```
