@@ -474,3 +474,5 @@ runTCPClient = withSocketsDo $ do
 ![run](../data/01-run.png)
 
 typed-session 用起来并不是一件容易的事，它涉及很多的概念，很多代码。将整个体系建立起来总是比较困难的，但是别担心，最困难的时候已经过去了，后面文章的例子都是在PingPong的基础上逐步完善，添加更多的功能，这将比建立体系容易很多。
+
+[下一章 02-Counter](02-Counter.md)

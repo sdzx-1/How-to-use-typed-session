@@ -214,3 +214,6 @@ Label 0                                   (S0)                (S1 s)            
 Branch 也会对Terminal产生影响，在任何分支中使用Terminal，都要求所有角色都处于确定状态。以这章的协议为例，如果不向Counter 发送CounterStop 消息，那么Counter 就会一直等待，但同时Client，Server已经停止，它们不会再向Counter 发送任何消息了。这将造成Counter 永远等待。状态生成器也会检查这样的错误是否发生。
 
 最后Branch 的存在使得循环的设计使用了Label和Goto的组合。
+
+
+[下一章 05-Random](05-Random.md)

@@ -274,3 +274,6 @@ Branch Client ChoiceNextAction {
 |]
 ```
 它有一定的复杂度，typed-session + hls 允许我们增量，交互式的开发它。这极大减少了我们的心智负担，同时这也意味着我们可以处理更加复杂的协议。
+
+
+[下一章 07-Fix](07-Fix.md)

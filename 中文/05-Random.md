@@ -94,3 +94,6 @@ index a19503a..c465bce 100644
 ![run](../data/05-run.gif)
 
 client 和 counter 输出的累加结果相同，非常完美。
+
+
+[下一章 06-Check](06-Check.md)
