@@ -12,6 +12,7 @@ typed-session 受到typed-protocols的启发而创建，与它不同的是typed-
 ![all code](../data/tst-github.png)
 
 ## 让我们开始第一个例子PingPong
+第一章的代码可以在此[找到](https://github.com/sdzx-1/typed-session-tutorial/tree/02-PingPong)。
 
 PingPong是一个简单的通信协议，它包含两个角色Client,Server。它的通信过程非常简单，Client向Server发送一个Ping消息，Server返回一个Pong消息。
 
