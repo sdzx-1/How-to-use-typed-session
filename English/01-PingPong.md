@@ -368,7 +368,7 @@ Peer PingPongRole PingPong Client IO (At () (Done Client)) S0
 4. Client specific role
 5. IO internal monad type
 6. At () (Done Client), (Done Client) indicates the state when the communication ends
-7. S0 indicates the state when the communication starts. This is one of the few places where the state is leaked. Refer to PingPong.prot to know that the client starts in state S0.
+7. S0 indicates the state when the communication starts. This is one of the few places where the state is leaked(In the latest code, ClientStartSt can be used instead of S0, so there is no state leakage.). Refer to PingPong.prot to know that the client starts in state S0.
 
 `I.do` means using QualifiedDo syntax, where `I` means
 ```haskell

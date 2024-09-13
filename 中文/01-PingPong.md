@@ -362,7 +362,7 @@ Peer PingPongRole PingPong Client IO (At () (Done Client)) S0
 4. Client 具体角色 
 5. IO 内部monad 的类型
 6. At () (Done Client) （Done Client）表示通信结束时候的状态
-7. S0 表示通信开始的状态, 这里是为数不多泄露状态的地方，参考PingPong.prot 得知client 开始时状态为S0。
+7. S0 表示通信开始的状态, 这里是为数不多泄露状态的地方（最新的代码中可以用ClientStartSt代替S0，因此不再有状态泄露。），参考PingPong.prot 得知client 开始时状态为S0。
 
 `I.do` 即使表示使用QualifiedDo 语法，这里的`I`表示 
 ```haskell
