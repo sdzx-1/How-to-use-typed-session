@@ -422,18 +422,18 @@ runTCPServer' mhost port = withSocketsDo $ do
 
   start sock = do
     (client, _peer) <- accept sock
-    serverTvar <- newTVarIO IntMap.empty
     let clientChannel = socketAsChannel client
-    thid1 <- forkIO $ decodeLoop (myTracer "server: ") Nothing (Decode decodeMsg) clientChannel serverTvar
-
-    let sendMap = IntMap.fromList [(singToInt SClient, C.send clientChannel)]
-        serverDriver = driverSimple (myTracer "server: ") encodeMsg sendMap serverTvar id
+    serverDriver <-
+      driverSimple
+        (myTracer "server: ")
+        encodeMsg
+        (Decode decodeMsg)
+        [(SomeRole SClient, clientChannel)]
+        id
     void $ runPeerWithDriver serverDriver serverPeer
-    killThread thid1
     close client
 ```
-Convert the `socket` to a `Channel` through `socketAtChannel`, create `serverTvar` at the same time, and start the decoding process `decodeLoop` through forkIO. `decodeLoop` executes in a loop: reads data from the `Channel`, uses `decodeMsg` to incrementally decode, and puts the decoded message into `serverTvar`.
-Because typed-session allows multi-role communication, it is necessary to specify which receiver's Channel to use when sending a message. So `sendMap` is used here to form a `Map` by corresponding roles to sending functions, and the corresponding sending function is queried from `sendMap` when sending a message.
+Convert the socket to a Channel through socketAtChannel. Because typed-session allows multi-role communication, the Channel for communicating with the Server is specified here: `[(SomeRole SClient, clientChannel)]`.
 
 
 The client startup code is similar to the server.
@@ -463,14 +463,18 @@ runTCPClient = withSocketsDo $ do
     client
  where
   client serverSock = do
-    clientTvar <- newTVarIO IntMap.empty
     let serverChannel = socketAsChannel serverSock
-        sendMap = IntMap.fromList [(singToInt SServer, C.send serverChannel)]
-        clientDriver = driverSimple (myTracer "client: ") encodeMsg sendMap clientTvar id
-    thid1 <- forkIO $ decodeLoop (myTracer "client: ") Nothing (Decode decodeMsg) serverChannel clientTvar
+    clientDriver <-
+      driverSimple
+        (myTracer "client: ")
+        encodeMsg
+        (Decode decodeMsg)
+        [(SomeRole SServer, serverChannel)]
+        id
     void $ runPeerWithDriver clientDriver clientPeer
-    killThread thid1
 ```
+Convert the socket to a Channel through socketAtChannel. Because typed-session allows multi-role communication, the Channel for communicating with the Client is specified here: `[(SomeRole SServer, serverChannel)]`.
+
 
 ## 5. Summary
 The above is the complete code for implementing a PingPong protocol using typed-session.

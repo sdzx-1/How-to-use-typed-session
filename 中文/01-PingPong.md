@@ -417,18 +417,18 @@ runTCPServer' mhost port = withSocketsDo $ do
 
   start sock = do
     (client, _peer) <- accept sock
-    serverTvar <- newTVarIO IntMap.empty
     let clientChannel = socketAsChannel client
-    thid1 <- forkIO $ decodeLoop (myTracer "server: ") Nothing (Decode decodeMsg) clientChannel serverTvar
-
-    let sendMap = IntMap.fromList [(singToInt SClient, C.send clientChannel)]
-        serverDriver = driverSimple (myTracer "server: ") encodeMsg sendMap serverTvar id
+    serverDriver <-
+      driverSimple
+        (myTracer "server: ")
+        encodeMsg
+        (Decode decodeMsg)
+        [(SomeRole SClient, clientChannel)]
+        id
     void $ runPeerWithDriver serverDriver serverPeer
-    killThread thid1
     close client
 ```
-通过socketAtChannel 将socket 转换为Channel，同时创建serverTvar，通过forkIO 启动解码进程decodeLoop。decodeLoop 循环执行：从Channel中读取数据，使用decodeMsg增量解码，将解码的消息放入serverTvar 中。
-因为typed-session 允许多角色通信，在发送消息时需要指定使用哪一个接收者的Channel。所以这里使用sendMap，将角色与发送函数对应形成sendMap，发送消息时从sendMap中查询对应的发送函数。
+通过socketAtChannel 将socket 转换为Channel，因为typed-session 允许多角色通信，这里指定与Server通信的Channel: `[(SomeRole SClient, clientChannel)]`。
 
 
 client 的启动代码与server类似。
@@ -458,14 +458,18 @@ runTCPClient = withSocketsDo $ do
     client
  where
   client serverSock = do
-    clientTvar <- newTVarIO IntMap.empty
     let serverChannel = socketAsChannel serverSock
-        sendMap = IntMap.fromList [(singToInt SServer, C.send serverChannel)]
-        clientDriver = driverSimple (myTracer "client: ") encodeMsg sendMap clientTvar id
-    thid1 <- forkIO $ decodeLoop (myTracer "client: ") Nothing (Decode decodeMsg) serverChannel clientTvar
+    clientDriver <-
+      driverSimple
+        (myTracer "client: ")
+        encodeMsg
+        (Decode decodeMsg)
+        [(SomeRole SServer, serverChannel)]
+        id
     void $ runPeerWithDriver clientDriver clientPeer
-    killThread thid1
 ```
+
+通过socketAtChannel 将socket 转换为Channel，因为typed-session 允许多角色通信，这里指定与Client通信的Channel: `[(SomeRole SServer, serverChannel)]`。
 
 ## 5.总结
 以上就是使用typed-session 实现一个PingPong 协议的全部代码。
